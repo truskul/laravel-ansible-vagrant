@@ -15,27 +15,27 @@ In future, i'll add something else, according to needs. In most cases, i need on
 ## Default configuration
 ### Network configuration
 The VM works on the default ports (80, 22), and uses `192.168.33.10` address as a private. The values to change are below:
-`
+```
     config.vm.network "forwarded_port", guest: 22, host: 22
     config.vm.network "forwarded_port", guest: 80, host: 80
     config.vm.network "private_network", ip: "192.168.33.10"
     config.vm.hostname = "laravel-vagrant-ansible"
-`
+```
 
 ### VM configuration
-`
+```
     config.vm.provider "virtualbox" do |vb|
         vb.memory = "2048"
         vb.cpus = "2"
     end
-`
+```
 
 ### Folder configration
 I tried to design the most flat folder structure that is. The heart of the application is in the `app` folder. In addition, I have mapped the `vendor` folder to the default user, i.e.` vagrant`. All the rest remains supported by the http - nginx user.
-`
+```
   config.vm.synced_folder "./app", "/home/vagrant/laravel/app", type: "virtualbox", owner: "www-data", group: "www-data"
   config.vm.synced_folder "./app/vendor", "/home/vagrant/laravel/app/vendor", type: "virtualbox", owner: "vagrant", group: "vagrant"
-`
+```
 If you would to add some new projects, just duplicate these two lines and change `app` directory.
 
 ## Installation
