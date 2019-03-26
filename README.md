@@ -1,5 +1,5 @@
 # laravel-ansible-vagrant
-The VM dedicated for a Laravel apps, provisioned by Ansible.
+The VM dedicated for a Laravel apps, created in Vagrant, provisioned by Ansible.
 
 ## The purpose
 I needed the best and the most flexible solution, for develop my apps written in Laravel in the local environment. And that's the only reason, why i've decided to do it.
@@ -10,9 +10,11 @@ I needed the best and the most flexible solution, for develop my apps written in
 - PHP 7.2 FPM
 - Ansible
 - Composer
+
 In future, i'll add something else, according to needs. In most cases, i need only these ones.
 
 ## Default configuration
+
 ### Network configuration
 The VM works on the default ports (80, 22), and uses `192.168.33.10` address as a private. The values to change are below:
 ```
@@ -21,7 +23,6 @@ The VM works on the default ports (80, 22), and uses `192.168.33.10` address as 
     config.vm.network "private_network", ip: "192.168.33.10"
     config.vm.hostname = "laravel-ansible-vagrant"
 ```
-
 ### VM configuration
 ```
     config.vm.provider "virtualbox" do |vb|
@@ -36,7 +37,9 @@ I tried to design the most flat folder structure that is. The heart of the appli
   config.vm.synced_folder "./app", "/home/vagrant/laravel/app", type: "virtualbox", owner: "www-data", group: "www-data"
   config.vm.synced_folder "./app/vendor", "/home/vagrant/laravel/app/vendor", type: "virtualbox", owner: "vagrant", group: "vagrant"
 ```
-If you would to add some new projects, just duplicate these two lines and change `app` directory.
+
+### Other config
+The rest of the configuration is in file `ansible/variables/main.yml`. There are data about the database, or php server, and - the most important - the list of your apps.
 
 ## Installation
 
@@ -58,8 +61,35 @@ If you would to add some new projects, just duplicate these two lines and change
 6. If you need to do sth in your VM, log to the SSH by `vagrant ssh` command.
 
 ## What's next?
-
 I've provisioned my VM, what can i do now? It's simple. Create your new project, or clone existing to `app` directory.
+
+## Make it flexible - more apps? No problem!
+If you wanna to run more apps on the VM, there are a few steps to do it.
+
+1. Create new directory for you new app:
+`cd laravel-ansible-vagrant && mkdir new-app`
+
+2. Add a new entries to Vagrantfile for sync your local folders with the VM:
+```
+  config.vm.synced_folder "./new-app", "/home/vagrant/laravel/new-app", type: "virtualbox", owner: "www-data", group: "www-data"
+  config.vm.synced_folder "./new-app/vendor", "/home/vagrant/laravel/new-app/vendor", type: "virtualbox", owner: "vagrant", group: "vagrant"
+```
+
+3. Add a new record into the array with webservers in `ansible/variables/main.yml`
+```
+webserver_apps:
+    default_app:
+        - server_name: laravel.app
+        - directory: /home/vagrant/laravel/app
+    new_app:
+        - server_name: laravel-new.app
+        - directory: /home/vagrant/laravel/new-app 
+```
+4. Add a new record to `/etc/hosts` in your local machine.
+    `sudo echo '192.168.33.10   laravel-new.app' >> /etc/hosts`
+
+5. Provision your VM
+`vagrant provision`
 
 ## License
 
