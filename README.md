@@ -19,7 +19,7 @@ The VM works on the default ports (80, 22), and uses `192.168.33.10` address as 
     config.vm.network "forwarded_port", guest: 22, host: 22
     config.vm.network "forwarded_port", guest: 80, host: 80
     config.vm.network "private_network", ip: "192.168.33.10"
-    config.vm.hostname = "laravel-vagrant-ansible"
+    config.vm.hostname = "laravel-ansible-vagrant"
 ```
 
 ### VM configuration
@@ -53,7 +53,7 @@ If you would to add some new projects, just duplicate these two lines and change
 
 5. Add this record to `/etc/hosts` in your local machine. Of course, you've to remember about change a IP also, if you've changed it in a previous step.
 
-`sudo echo '192.168.33.10   laravel.app' >> /etc/hosts`
+    `sudo echo '192.168.33.10   laravel.app' >> /etc/hosts`
 
 6. If you need to do sth in your VM, log to the SSH by `vagrant ssh` command.
 
