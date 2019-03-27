@@ -1,0 +1,11 @@
+---
+- hosts: all
+  become: true
+  vars_files:
+    - variables/main.yml
+  roles:
+    - common
+    - php
+    - webserver
+    - database
+    - composer

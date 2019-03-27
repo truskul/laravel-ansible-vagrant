@@ -1,0 +1,34 @@
+- name: Install nginx
+  apt: "{{ item }}"
+  with_items:
+    - nginx-common
+    - nginx-full
+- name: Start nginx
+  service:
+    name: nginx
+    state: started
+- name: Check if sites directory exists
+  stat: 
+    path: /etc/nginx/sites-available
+  register: dir_details
+- name: "Create configuration for {{ item.key }}"
+  template:
+    src: "nginx.conf.j2"
+    dest: "/etc/nginx/sites-available/{{ item.key }}.conf"
+  with_dict: webserver_apps
+  when: dir_details.stat.exists and dir_details.stat.isdir 
+- name: Disable default nginx site
+  file:
+    path: /etc/nginx/sites-enabled/default
+    state: absent
+- name: "Enable {{ item.key }} site"
+  file:
+    src: "/etc/nginx/sites-available/{{ item.key }}.conf"
+    dest: "/etc/nginx/sites-enabled/{{ item.key }}.conf"
+    state: link
+  with_dict: webserver_apps
+- name: Restart nginx
+  service:
+    name: nginx
+    state: restarted
+    enabled: true

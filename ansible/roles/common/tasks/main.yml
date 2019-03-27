@@ -1,0 +1,20 @@
+- name: Install software common packages
+  apt: "{{ item }}"
+  with_items:
+    - software-properties-common
+    - apt-transport-https
+- name: Add PHP support repository
+  apt_repository:
+    repo: "{{ item }}"
+  with_items:
+    - ppa:ondrej/php
+- name: Download trusted key for a PHP packages
+  get_url:
+    url: https://packages.sury.org/php/apt.gpg
+    dest: /etc/apt/trusted.gpg.d/php.gpg
+- name: Add a PHP repository to the sources list
+  shell: echo "deb https://packages.sury.org/php/ $(lsb_release -sc) main" > /etc/apt/sources.list.d/php.list
+- name: Update packages
+  force: true
+  apt:
+    upgrade: true

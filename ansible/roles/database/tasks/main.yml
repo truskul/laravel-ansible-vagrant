@@ -1,0 +1,26 @@
+- name: Install MariaDB Server
+  apt:
+    name: mariadb-server
+    state: latest
+    force: true
+- name: Install libmysqlclient
+  ignore_errors: true
+  apt:
+    name: libmysqlclient-dev
+    force: true
+- name: Install pip dependencies
+  ignore_errors: true
+  pip:
+    name: MySQL-python
+- name: Create database
+  mysql_db:
+    name: "{{ database_name }}"
+    state: present
+
+- name: Create user and grant privileges to database
+  mysql_user:
+    name: "{{ database_user }}"
+    password: "{{ database_pass }}"
+    host: "{{ database_host }}"
+    priv: "{{ database_name }}.*:ALL,GRANT"
+    state: present

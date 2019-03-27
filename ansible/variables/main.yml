@@ -1,0 +1,10 @@
+---
+webserver_apps:
+  default_app:
+    - server_name: laravel.app
+    - directory: /home/vagrant/laravel/app
+    - database_name: laravel_app
+database_host: localhost
+database_user: laravel_user
+database_pass: Defaultpassword!@#
+php_version: 7.2
