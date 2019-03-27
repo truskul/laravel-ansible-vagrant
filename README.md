@@ -52,7 +52,13 @@ The rest of the configuration is in file `ansible/variables/main.yml`. There are
 3. Install vagrant-vbguest plugin, required to sync directories
 `vagrant plugin install vagrant-vbguest`
 
-4. Go to the cloned directory and run `vagrant up` command. Optionally, you can change the IP Address, or host name. Feel free to propose some customisations in the next versions. 
+4. Create or clone your project in main directory. The projects directory should be called `app`
+    - For new project:
+    `cd laravel-ansible-vagrant && composer create-project --prefer-dist laravel/laravel app`
+    - For existing project (on git):
+    `cd laravel-ansible-vagrant && git clone -http/ssh code- app`
+    - Or just copy existing directory and rename it to `app`
+4. Run `vagrant up` command. Optionally, you can change the IP Address, or host name. Feel free to propose some customisations in the next versions. 
 
 5. Add this record to `/etc/hosts` in your local machine. Of course, you've to remember about change a IP also, if you've changed it in a previous step.
 

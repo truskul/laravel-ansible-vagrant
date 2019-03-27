@@ -1,4 +1,5 @@
-Vagrant.configure("2") do |config|
+VAGRANTFILE_API_VERSION = "2"
+Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     config.vm.box = "williamyeh/ansible"
     config.vm.hostname = "laravel-ansible-vagrant"
     config.vm.box_check_update = true
@@ -8,8 +9,7 @@ Vagrant.configure("2") do |config|
   
     config.vm.network "public_network"
   
-    config.vm.synced_folder ".", "/home/vagrant/laravel/app", :owner => "www-data", :group => "www-data"
-    config.vm.synced_folder "./vendor", "/home/vagrant/laravel/app/vendor", :owner => "vagrant", :group => "vagrant"
+    config.vm.synced_folder "./app", "/home/vagrant/laravel/app", :owner => "www-data", :group => "www-data"
 
     config.vm.provider "virtualbox" do |vb|
       vb.memory = "2048"
